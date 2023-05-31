@@ -12,5 +12,24 @@ export class UsersService {
     getAll(): User[]{
         return this.users
     }
+
+    getAllFilteredByName(name: string): User[] {
+        return this.users.filter(user => {return user.name === name})
+    }
+
+    getUsersById(id: number): User {
+        return this.users[id]
+    }
+
+    post(param: {name: string}) {
+        const user = {
+            id: this.users.length,
+            name: param.name,
+        };
+
+        this.users.push(user);
+
+        return user
+    }
 }
 

@@ -6,18 +6,17 @@ export class ActivitiesController {
   constructor(private activitesService: ActivitiesService) {}
 
   @Get()
-  getAll(){
-    return this.activitesService.getAll();
-  }
-
-  @Get()
-  getAllFilteredByName(@Query("name") name:string) {
-    return this.activitesService.getAllFilteredByName(name);
+  getActivities(@Query("name") name?:string) {
+    if (name !== undefined && name !== null) {
+      return this.activitesService.getAllFilteredByName(name);
+    } else {
+        return this.activitesService.getAll();
+    }
   }
 
   @Get(':activityId')
-  getActivitiesByPersonId(@Param('activityId') activityId: string) {
-    return this.activitesService.getOne(Number(activityId));
+  getActivitiesById(@Param('activityId') activityId: string) {
+    return this.activitesService.getActivitiesById(Number(activityId));
   }
 
   @Post()

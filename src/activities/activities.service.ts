@@ -17,7 +17,7 @@ export class ActivitiesService {
         return this.activities.filter(activity => {return activity.name === name})
     }
 
-    getOne(id: number): Activity {
+    getActivitiesById(id: number): Activity {
         return this.activities[id]
     }
 
