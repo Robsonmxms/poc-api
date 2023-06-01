@@ -1,27 +1,32 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { ActivitiesService } from './activities.service';
-import { User } from 'src/users/dto/users.dto';
+import { User } from '@prisma/client';
 
 @Controller('activities')
 export class ActivitiesController {
-  constructor(private activitesService: ActivitiesService) {}
+  constructor(private activitiesService: ActivitiesService) {}
 
   @Get()
   getActivities(@Query("name") name?:string) {
     if (name !== undefined && name !== null) {
-      return this.activitesService.getAllFilteredByName(name);
+      return this.activitiesService.getAllFilteredByName(name);
     } else {
-        return this.activitesService.getAll();
+        return this.activitiesService.getAll();
     }
   }
 
   @Get(':activityId')
   getActivitiesById(@Param('activityId') activityId: string) {
-    return this.activitesService.getActivitiesById(Number(activityId));
+    return this.activitiesService.getActivityById(Number(activityId));
   }
 
   @Post()
   post(@Body() params: { name: string , description: string, users: User[]}) {
-    return this.activitesService.post(params);
+    return this.activitiesService.post(params);
+  }
+
+  @Delete()
+  deleteAllActivities(): Promise<void> {
+    return this.activitiesService.deleteAll();
   }
 }

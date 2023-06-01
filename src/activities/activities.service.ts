@@ -1,55 +1,90 @@
-import { Injectable } from "@nestjs/common";
-import { Activity } from "./dto/activity.dto";
-import { UsersService } from "src/users/users.service";
-import { User } from "src/users/dto/users.dto";
+import { Injectable, Query } from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
+import { Activity, User } from "@prisma/client";
 
 @Injectable()
 export class ActivitiesService {
-    private activities: Activity[]
-    private usersService: UsersService
     
-    constructor(usersService: UsersService){
-        this.activities = []
-        this.usersService = usersService
+    constructor(private readonly prismaService: PrismaService){}
+    
+    async getAll(): Promise<Activity[]> {
+        return this.prismaService.activity.findMany({
+            include: { users: true }
+        });
     }
     
-    getAll(): Activity[]{
-        return this.activities
-    }
-    
-    getAllFilteredByName(name: string): Activity[] {
-        return this.activities.filter(activity => {return activity.name === name})
-    }
-
-    getActivitiesById(id: number): Activity {
-        return this.activities[id]
+    async getAllFilteredByName(name: string): Promise<Activity[]> {
+        return this.prismaService.activity.findMany({
+            where: { name },
+            include: { users: true }
+        });
     }
 
-    post(param: { name: string , description: string, users: User[]}) {
-        const activity = {
-            id: this.activities.length,
-            name: param.name,
-            description: param.description,
-            users: param.users
-        };
-        
-        for (let i = 0; i < activity.users.length; i++) {
-            const currentUser = activity.users[i];
-            const user = this.findUserByName(this.usersService.getAll(), currentUser.name);
+    async getActivityById(id: number): Promise<Activity | null> {
+        return this.prismaService.activity.findUnique({
+            where: { id },
+            include: { users: true },
+        });
+    }
+
+    // async post(param: { name: string; description: string; users: User[] }): Promise<Activity> {
+    //     const activity = await this.prismaService.activity.create({
+    //         data: {
+    //             name: param.name,
+    //             description: param.description,
+    //             users: {
+    //                 create: param.users,
+    //             },
+    //         },
+    //         include: {
+    //             users: true,
+    //         },
+    //     });
+    //     return activity;
+    // }
+
+    async post(param: {
+        name: string;
+        description: string;
+        users: User[];
+    }): Promise<Activity> {
+        const { name, description, users } = param;
     
-            if (user) {
-                activity.users[i] = this.usersService.getUserById(Number(user.id));
-            } else {
-                activity.users[i] = this.usersService.post({ name: currentUser.name });
-            }
-        }
+        const upsertUser = users.map(async (user) => {
+            return await this.prismaService.user.upsert({
+                where: {
+                    name: user.name,
+                },
+                create: {
+                    name: user.name,
+                },
+                update: {},
+                select: {
+                    id: true,
+                    name: true,
+                },
+            });
+        });
     
-        this.activities.push(activity);
+        const connectedUsers = await Promise.all(upsertUser);
+    
+        const activity = await this.prismaService.activity.create({
+            data: {
+                name,
+                description,
+                users: {
+                    connect: connectedUsers.map((user) => ({ id: user.id })),
+                },
+            },
+            include: {
+                users: true,
+            },
+        });
     
         return activity;
+    }    
+    
+    async deleteAll(): Promise<void> {
+        await this.prismaService.activity.deleteMany();
     }
-
-    private findUserByName(users: User[], name: string): User | undefined {
-        return users.find(user => user.name === name);
-    }  
 }
