@@ -1,0 +1,25 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Activity {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  users       User[]   @relation("ActivityUsers")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  name       String     @unique
+  activities Activity[] @relation("ActivityUsers")
+}
+
