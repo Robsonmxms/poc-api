@@ -17,7 +17,7 @@ export class UsersService {
         return this.users.filter(user => {return user.name === name})
     }
 
-    getUsersById(id: number): User {
+    getUserById(id: number): User {
         return this.users[id]
     }
 
