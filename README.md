@@ -20,6 +20,8 @@ To quickly start a development environment for this project, we provide a seed s
 ```bash
 #build pending migrations
 $ npx prisma migrate dev
+
+$ npx prisma db seed
 ```
 
 ```bash
