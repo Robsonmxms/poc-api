@@ -11,6 +11,18 @@ The idea of the application is that each activity is defined by its id, name, de
 ## Running the app
 
 ```bash
+# generate prisma
+$ npx prisma generate 
+```
+
+To quickly start a development environment for this project, we provide a seed script located at prisma/seed.ts. if you decide to use this script you can run the following command line:
+
+```bash
+#build pending migrations
+$ npx prisma migrate dev
+```
+
+```bash
 # development
 $ npm run start
 
