@@ -10,18 +10,24 @@ The idea of the application is that each activity is defined by its id, name, de
 
 ## Running the app
 
+- Rename file .env.example to .env
+
+```bash
+# install repository
+$ npm install
+```
+
 ```bash
 # generate prisma
 $ npx prisma generate 
 ```
 
-To quickly start a development environment for this project, we provide a seed script located at prisma/seed.ts. if you decide to use this script you can run the following command line:
+- To quickly start a development environment for this project, we provide a seed script located at prisma/seed.ts. if you decide to use this script you can run the following command line:
 
 ```bash
 #build pending migrations
 $ npx prisma migrate dev
 
-$ npx prisma db seed
 ```
 
 ```bash
@@ -37,16 +43,24 @@ $ npm run start:prod
 
 ## Requisitions
 
+### Activities
+
 | Method     | Path | Description |
 | ---------- | ---- | ----------- |
-| ![GET](https://img.shields.io/badge/-GET-blue)|  http://localhost:3000/activities   | Get all activities | 
-| ![GET](https://img.shields.io/badge/-GET-blue)| http://localhost:3000/users  | Get all users    |
+| ![GET](https://img.shields.io/badge/-GET-blue)|  http://localhost:3000/activities   | Get all activities |
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/activities?name=yourAtivityName    | Get activities filtered by name    |
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/activities/1   | Get activity by id   |
-| ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/users/1   | Get user by id   |
-| ![PUT](https://img.shields.io/badge/-PUT-green)    | http://localhost:3000/activities | Create an activity (See example below)|
-| ![PUT](https://img.shields.io/badge/-PUT-green)    | http://localhost:3000/users | Create an user (See example below)|
+| ![POST](https://img.shields.io/badge/-POST-green)    | http://localhost:3000/activities | Create an activity (See example below)|
 | ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/activities | Delete all activities |
+
+### Users
+
+| Method     | Path | Description |
+| ---------- | ---- | ----------- |
+| ![GET](https://img.shields.io/badge/-GET-blue)| http://localhost:3000/users  | Get all users    |
+| ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/users?name=yourUserName    | Get users filtered by name    |
+| ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/users/1   | Get user by id   |
+| ![POST](https://img.shields.io/badge/-POST-green)    | http://localhost:3000/users | Create an user (See example below)|
 | ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/users | Delete all users |
 
 ## Examples
