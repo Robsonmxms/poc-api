@@ -1,36 +1,12 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# POC API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+[![TypeScript version](https://img.shields.io/badge/TypeScript-v5.0.4-blue)](https://www.typescriptlang.org/download) [![Nodejs version](https://img.shields.io/badge/Node.js-v20.2.0-green)](https://nodejs.org/en/download) [![NestJS version](https://img.shields.io/badge/NestJS-v9.4.2-red)](https://docs.nestjs.com) [![Prisma version](https://img.shields.io/badge/Prisma-v4.15.0-orange)](https://www.prisma.io/docs/getting-started) [![SQLite version](https://img.shields.io/badge/SQLite-v3.39.5-yellow)](https://sqlite.org/download.html)
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This proof of concept aims to develop a simple api that allows using GET, POST and DELETE. In addition, integrated with a database.
 
-## Installation
-
-```bash
-$ npm install
-```
+The idea of the application is that each activity is defined by its id, name, description and a list of users linked to it. On the other hand, a user is defined by id, name and a list of activities linked to him.
 
 ## Running the app
 
@@ -45,29 +21,75 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Test
+## Requisitions
+| Method     | Path | Description |
+| ---------- | ---- | ----------- |
+| ![GET](https://img.shields.io/badge/-GET-blue)|  http://localhost:3000/activities   | Get all activities | 
+| ![GET](https://img.shields.io/badge/-GET-blue)| http://localhost:3000/users  | Get all users    |
+| ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/activities?name=yourAtivityName    | Get activities filtered by name    |
+| ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/activities/1   | Get activity by id   |
+| ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/users/1   | Get user by id   |
+| ![PUT](https://img.shields.io/badge/-PUT-green)    | http://localhost:3000/activities | Create an activity ([Example](#section-1))|
+| ![PUT](https://img.shields.io/badge/-PUT-green)    | http://localhost:3000/users | Create an user ([Example](#section-2))|
+| ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/activities | Delete all activities |
+| ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/users | Delete all users |
 
-```bash
-# unit tests
-$ npm run test
+## Examples
 
-# e2e tests
-$ npm run test:e2e
+### Create an activity {#section-1}
 
-# test coverage
-$ npm run test:cov
-```
+- Input
+  
+  ```json
+  {
+    "name": "the name of your activity",
+    "description": "the description of your activity",
+    "users": [
+      {
+        "name": "name1"
+      },
+      {
+        "name": "name2"
+      }
+    ]
+  }
+  ```
 
-## Support
+- Output
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+  ```json
+  {
+    "id": 0,
+    "name": "the name of your activity",
+    "description": "the description of your activity",
+    "users": [
+      {
+        "id": 0,
+        "name": "name1"
+      },
+      {
+        "id": 1,
+        "name": "name2"
+      }
+    ]
+  }
+  ```
 
-## Stay in touch
+### Create an user {#section-2}
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- Input
+  
+  ```json
+  {
+    "name" : "User name"
+  }
+  ```
 
-## License
+- Output
 
-Nest is [MIT licensed](LICENSE).
+  ```json
+  {
+    "id" : 3,
+    "name" : "User name"
+  }
+  ```
