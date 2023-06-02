@@ -22,6 +22,7 @@ $ npm run start:prod
 ```
 
 ## Requisitions
+
 | Method     | Path | Description |
 | ---------- | ---- | ----------- |
 | ![GET](https://img.shields.io/badge/-GET-blue)|  http://localhost:3000/activities   | Get all activities | 
@@ -29,14 +30,14 @@ $ npm run start:prod
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/activities?name=yourAtivityName    | Get activities filtered by name    |
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/activities/1   | Get activity by id   |
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/users/1   | Get user by id   |
-| ![PUT](https://img.shields.io/badge/-PUT-green)    | http://localhost:3000/activities | Create an activity ([Example](#section-1))|
-| ![PUT](https://img.shields.io/badge/-PUT-green)    | http://localhost:3000/users | Create an user ([Example](#section-2))|
+| ![PUT](https://img.shields.io/badge/-PUT-green)    | http://localhost:3000/activities | Create an activity (See example below)|
+| ![PUT](https://img.shields.io/badge/-PUT-green)    | http://localhost:3000/users | Create an user (See example below)|
 | ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/activities | Delete all activities |
 | ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/users | Delete all users |
 
 ## Examples
 
-### Create an activity {#section-1}
+### Create an activity
 
 - Input
   
@@ -75,7 +76,7 @@ $ npm run start:prod
   }
   ```
 
-### Create an user {#section-2}
+### Create an user
 
 - Input
   
