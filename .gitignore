@@ -36,3 +36,6 @@ lerna-debug.log*
 
 # Ignore .env file
 .env
+
+#Ignore .db file
+*.db

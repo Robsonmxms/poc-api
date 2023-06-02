@@ -1,9 +1,16 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "Activity" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL
+);
 
-  - You are about to drop the column `activityId` on the `User` table. All the data in the column will be lost.
+-- CreateTable
+CREATE TABLE "User" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL
+);
 
-*/
 -- CreateTable
 CREATE TABLE "_ActivityUsers" (
     "A" INTEGER NOT NULL,
@@ -12,17 +19,8 @@ CREATE TABLE "_ActivityUsers" (
     CONSTRAINT "_ActivityUsers_B_fkey" FOREIGN KEY ("B") REFERENCES "User" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- RedefineTables
-PRAGMA foreign_keys=OFF;
-CREATE TABLE "new_User" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name" TEXT NOT NULL
-);
-INSERT INTO "new_User" ("id", "name") SELECT "id", "name" FROM "User";
-DROP TABLE "User";
-ALTER TABLE "new_User" RENAME TO "User";
-PRAGMA foreign_key_check;
-PRAGMA foreign_keys=ON;
+-- CreateIndex
+CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ActivityUsers_AB_unique" ON "_ActivityUsers"("A", "B");
