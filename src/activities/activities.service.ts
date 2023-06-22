@@ -1,47 +1,32 @@
-import { Injectable, Query } from "@nestjs/common";
+import { Injectable, NotFoundException, Query } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Activity, User } from "@prisma/client";
+import { CreateActivityDto } from "./dtos/create-activity.dto";
 
 @Injectable()
 export class ActivitiesService {
     
     constructor(private readonly prismaService: PrismaService){}
     
-    async getAll(): Promise<Activity[]> {
+    async getAll(name?: string): Promise<Activity[]> {
         return this.prismaService.activity.findMany({
-            include: { users: true }
-        });
-    }
-    
-    async getAllFilteredByName(name: string): Promise<Activity[]> {
-        return this.prismaService.activity.findMany({
-            where: { name },
+            where: name ? { name } : undefined,
             include: { users: true }
         });
     }
 
     async getActivityById(id: number): Promise<Activity | null> {
-        return this.prismaService.activity.findUnique({
+        const activity = await this.prismaService.activity.findUnique({
             where: { id },
             include: { users: true },
         });
-    }
 
-    // async post(param: { name: string; description: string; users: User[] }): Promise<Activity> {
-    //     const activity = await this.prismaService.activity.create({
-    //         data: {
-    //             name: param.name,
-    //             description: param.description,
-    //             users: {
-    //                 create: param.users,
-    //             },
-    //         },
-    //         include: {
-    //             users: true,
-    //         },
-    //     });
-    //     return activity;
-    // }
+        if(!activity) {
+            throw new NotFoundException("Activity not found")
+        }
+
+        return activity
+    }
 
     async post(param: {
         name: string;
@@ -82,9 +67,23 @@ export class ActivitiesService {
         });
     
         return activity;
-    }    
+    }
     
-    async deleteAll(): Promise<void> {
-        await this.prismaService.activity.deleteMany();
+    async patch(id: number, param: CreateActivityDto): Promise<Activity> {
+        return this.prismaService.activity.update({
+            where: { id },
+            data: param
+        })
+    }
+    
+    async delete(id: number): Promise<Activity> {
+        try {
+            return await this.prismaService.activity.delete({
+                where: { id }
+            });
+        } catch(error){
+            console.log(error)
+            throw new NotFoundException("Activity not found")
+        }
     }
 }
