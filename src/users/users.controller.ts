@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -7,11 +8,7 @@ export class UsersController {
 
     @Get()
     getUsers(@Query("name") name?:string){
-        if (name !== undefined && name !== null) {
-            return this.usersService.getAllFilteredByName(name);
-        } else {
-            return this.usersService.getAll();
-        }
+        return this.usersService.getAll(name);
     }
 
     @Get(':userId')
@@ -24,8 +21,18 @@ export class UsersController {
         return this.usersService.post(params);
     }
 
-    @Delete()
-    deleteAllActivities(): Promise<void> {
-        return this.usersService.deleteAll();
+    @Patch('/:id')
+    patch(
+        @Param('id') userId: string, 
+        @Body() params: CreateUserDto
+    ) {
+        return this.usersService.patch(+userId, params)
+    }
+
+    @Delete('/:id')
+    delete(
+        @Param('id') userId: string
+    ) {
+        return this.usersService.delete(+userId);
     }
 }

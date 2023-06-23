@@ -1,20 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { User } from '@prisma/client';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Injectable()
 export class UsersService {
     constructor(private readonly prismaService: PrismaService) {}
 
-    async getAll(): Promise<User[]> {
+    async getAll(name?: string): Promise<User[]> {
         return this.prismaService.user.findMany({
-            include: { activities: true },
-        });
-    }
-
-    async getAllFilteredByName(name: string): Promise<User[]> {
-        return this.prismaService.user.findMany({
-            where: { name },
+            where: name ? { name } : undefined,
             include: { activities: true }
         });
     }
@@ -35,7 +30,21 @@ export class UsersService {
         return user;
     }
 
-    async deleteAll(): Promise<void> {
-        await this.prismaService.user.deleteMany();
+    async patch(id: number, param: CreateUserDto): Promise<User> {
+        return this.prismaService.user.update({
+            where: { id },
+            data: param
+        })
+    }
+
+    async delete(id: number): Promise<User> {
+        try {
+            return await this.prismaService.user.delete({
+                where: { id }
+            });
+        } catch(error){
+            console.log(error)
+            throw new NotFoundException("User not found")
+        }
     }
 }

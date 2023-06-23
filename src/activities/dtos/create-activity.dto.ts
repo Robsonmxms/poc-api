@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, Length } from "class-validator"
+import { IsOptional, Length } from "class-validator"
 
 export class CreateActivityDto {
     @IsOptional()
