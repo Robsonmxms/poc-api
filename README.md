@@ -50,8 +50,9 @@ $ npm run start:prod
 | ![GET](https://img.shields.io/badge/-GET-blue)|  http://localhost:3000/activities   | Get all activities |
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/activities?name=yourAtivityName    | Get activities filtered by name    |
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/activities/1   | Get activity by id   |
-| ![POST](https://img.shields.io/badge/-POST-green)    | http://localhost:3000/activities | Create an activity (See example below)|
-| ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/activities | Delete all activities |
+| ![POST](https://img.shields.io/badge/-POST-green)    | http://localhost:3000/activities | Create an activity (see example below)|
+| ![PATCH](https://img.shields.io/badge/-PATCH-yellow)    | http://localhost:3000/activities/1 | Update an activity by id (see example below)|
+| ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/activities/1 | Delete activity by id |
 
 ### Users
 
@@ -61,7 +62,8 @@ $ npm run start:prod
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/users?name=yourUserName    | Get users filtered by name    |
 | ![GET](https://img.shields.io/badge/-GET-blue)    | http://localhost:3000/users/1   | Get user by id   |
 | ![POST](https://img.shields.io/badge/-POST-green)    | http://localhost:3000/users | Create an user (See example below)|
-| ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/users | Delete all users |
+| ![PATCH](https://img.shields.io/badge/-PATCH-yellow)    | http://localhost:3000/users/1 | Update an user by id (see example below)|
+| ![DELETE](https://img.shields.io/badge/-DELETE-red)    | http://localhost:3000/users/1 | Delete user by id |
 
 ## Examples
 
@@ -103,6 +105,25 @@ $ npm run start:prod
     ]
   }
   ```
+### Update an activity
+
+- Input
+  
+  ```json
+  {
+	  "name" : "New name"
+  }
+  ```
+
+- Output
+
+  ```json
+  {
+    "id": 0,
+    "name": "New name",
+    "description": "the description of your activity"
+  }
+  ```
 
 ### Create an user
 
@@ -120,5 +141,22 @@ $ npm run start:prod
   {
     "id" : 3,
     "name" : "User name"
+  }
+  ```
+### Update an user
+
+- Input
+  
+  ```json
+  {
+    "name" : "New Name"
+  }
+  ```
+- Output
+
+  ```json
+  {
+    "id" : 3,
+    "name" : "New Name"
   }
   ```

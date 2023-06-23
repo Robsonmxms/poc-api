@@ -31,10 +31,15 @@ export class UsersService {
     }
 
     async patch(id: number, param: CreateUserDto): Promise<User> {
-        return this.prismaService.user.update({
-            where: { id },
-            data: param
-        })
+        try{
+            return await this.prismaService.user.update({
+                where: { id },
+                data: param
+            })
+        } catch(error){
+            console.log(error);
+            throw new NotFoundException("User not found");
+        }
     }
 
     async delete(id: number): Promise<User> {
@@ -43,8 +48,8 @@ export class UsersService {
                 where: { id }
             });
         } catch(error){
-            console.log(error)
-            throw new NotFoundException("User not found")
+            console.log(error);
+            throw new NotFoundException("User not found");
         }
     }
 }
