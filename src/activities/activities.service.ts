@@ -70,10 +70,15 @@ export class ActivitiesService {
     }
     
     async patch(id: number, param: CreateActivityDto): Promise<Activity> {
-        return this.prismaService.activity.update({
-            where: { id },
-            data: param
-        })
+        try {
+            return await this.prismaService.activity.update({
+                where: { id },
+                data: param
+            })
+        } catch(error) {
+            console.log(error);
+            throw new NotFoundException("Activity not found");
+        }
     }
     
     async delete(id: number): Promise<Activity> {
@@ -82,8 +87,8 @@ export class ActivitiesService {
                 where: { id }
             });
         } catch(error){
-            console.log(error)
-            throw new NotFoundException("Activity not found")
+            console.log(error);
+            throw new NotFoundException("Activity not found");
         }
     }
 }
