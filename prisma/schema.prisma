@@ -12,14 +12,16 @@ generator client {
 
 model Activity {
   id          Int      @id @default(autoincrement())
-  name        String
-  description String
+  name        String   @unique
+  description String   
   users       User[]   @relation("ActivityUsers")
 }
 
 model User {
   id         Int       @id @default(autoincrement())
-  name       String     @unique
+  name       String     
+  email      String     @unique
+  pass       String     
   activities Activity[] @relation("ActivityUsers")
 }
 
