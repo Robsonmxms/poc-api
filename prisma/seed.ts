@@ -1,18 +1,25 @@
 import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
 async function seed() {
     try {
+        const user1Pass = 'user1Pass';
         const user1 = await prisma.user.create({
             data: {
                 name: 'User 1',
+                email: 'email1@server.com',
+                pass: await bcrypt.hash(user1Pass, 10),
             },
         });
 
+        const user2Pass = 'user2Pass';
         const user2 = await prisma.user.create({
             data: {
                 name: 'User 2',
+                email: 'email2@server.com',
+                pass: await bcrypt.hash(user2Pass, 10),
             },
         });
 
@@ -21,10 +28,7 @@ async function seed() {
                 name: 'Activity 1',
                 description: 'Description of Activity 1',
                 users: {
-                    connect: [
-                        { id: user1.id },
-                        { id: user2.id },
-                    ],
+                    connect: [{ id: user1.id }, { id: user2.id }],
                 },
             },
         });
@@ -34,9 +38,7 @@ async function seed() {
                 name: 'Activity 2',
                 description: 'Description of Activity 2',
                 users: {
-                    connect: [
-                        { id: user2.id },
-                    ],
+                    connect: [{ id: user2.id }],
                 },
             },
         });

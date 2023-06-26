@@ -1,17 +1,16 @@
-import { Injectable, NotFoundException, Query } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { Activity, User } from "@prisma/client";
-import { CreateActivityDto } from "./dtos/create-activity.dto";
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Activity, User } from '@prisma/client';
+import { CreateActivityDto } from './dtos/create-activity.dto';
 
 @Injectable()
 export class ActivitiesService {
-    
-    constructor(private readonly prismaService: PrismaService){}
-    
+    constructor(private readonly prismaService: PrismaService) {}
+
     async getAll(name?: string): Promise<Activity[]> {
         return this.prismaService.activity.findMany({
             where: name ? { name } : undefined,
-            include: { users: true }
+            include: { users: true },
         });
     }
 
@@ -21,11 +20,11 @@ export class ActivitiesService {
             include: { users: true },
         });
 
-        if(!activity) {
-            throw new NotFoundException("Activity not found")
+        if (!activity) {
+            throw new NotFoundException('Activity not found');
         }
 
-        return activity
+        return activity;
     }
 
     async post(param: {
@@ -34,25 +33,15 @@ export class ActivitiesService {
         users: User[];
     }): Promise<Activity> {
         const { name, description, users } = param;
-    
+
         const upsertUser = users.map(async (user) => {
-            return await this.prismaService.user.upsert({
-                where: {
-                    name: user.name,
-                },
-                create: {
-                    name: user.name,
-                },
-                update: {},
-                select: {
-                    id: true,
-                    name: true,
-                },
+            return await this.prismaService.user.findUnique({
+                where: { email: user.email },
             });
         });
-    
+
         const connectedUsers = await Promise.all(upsertUser);
-    
+
         const activity = await this.prismaService.activity.create({
             data: {
                 name,
@@ -65,30 +54,30 @@ export class ActivitiesService {
                 users: true,
             },
         });
-    
+
         return activity;
     }
-    
+
     async patch(id: number, param: CreateActivityDto): Promise<Activity> {
         try {
             return await this.prismaService.activity.update({
                 where: { id },
-                data: param
-            })
-        } catch(error) {
+                data: param,
+            });
+        } catch (error) {
             console.log(error);
-            throw new NotFoundException("Activity not found");
+            throw new NotFoundException('Activity not found');
         }
     }
-    
+
     async delete(id: number): Promise<Activity> {
         try {
             return await this.prismaService.activity.delete({
-                where: { id }
+                where: { id },
             });
-        } catch(error){
+        } catch (error) {
             console.log(error);
-            throw new NotFoundException("Activity not found");
+            throw new NotFoundException('Activity not found');
         }
     }
 }
